@@ -4,11 +4,11 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 
 from django.conf import settings
-from actstream import settings as actstream_settings
+from actstream.notifications import settings as notification_settings
 
 
 def assert_soft_delete():
-    if not actstream_settings.NOTIFICATIONS_SOFT_DELETE:
+    if not notification_settings.NOTIFICATIONS_SOFT_DELETE:
         msg = """To use 'deleted' field, please set 'NOTIFICATIONS_SOFT_DELETE'=True in settings.
         Otherwise NotificationQuerySet.unread and NotificationQuerySet.read do NOT filter by 'deleted' field.
         """
@@ -37,7 +37,7 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
 
-    objects = actstream_settings.get_notification_manager()
+    objects = notification_settings.get_notification_manager()
 
     def mark_as_read(self):
         if not self.is_read:
@@ -51,7 +51,7 @@ class Notification(models.Model):
 
     def delete(self, using=None):
 
-        if actstream_settings.NOTIFICATIONS_SOFT_DELETE:
+        if notification_settings.NOTIFICATIONS_SOFT_DELETE:
             self.soft_delete()
         else:
             super(Notification, self).delete()
