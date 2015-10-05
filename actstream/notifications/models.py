@@ -38,7 +38,6 @@ class Notification(models.Model):
     is_deleted = models.BooleanField(default=False)
 
     objects = actstream_settings.get_notification_manager()
-    # objects = NotificationManager.from_queryset(NotificationQuerySet)()
 
     def mark_as_read(self):
         if not self.is_read:
