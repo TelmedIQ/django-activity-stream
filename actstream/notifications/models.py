@@ -31,6 +31,7 @@ class NotificationLevel(object):
 
 class Notification(models.Model):
 
+    level = models.PositiveSmallIntegerField(choices=NotificationLevel, default=NotificationLevel.INFO)
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='stream_notifications')
     action = models.ForeignKey('actstream.Action', related_name='notifications')
     is_read = models.BooleanField(default=False)
